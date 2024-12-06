@@ -18,22 +18,29 @@ client = OpenAI(
     api_key=api_key,
     base_url=api_base_url,
 )
-chat_completion= client.chat.completions.create(
+# 사용자 입력 (샘플 데이터)
+user_input = """
+This blog focuses on the best practices for web development in 2024. 
+We cover essential topics like performance optimization, accessibility, 
+and the latest trends in JavaScript frameworks.
+"""
+
+# Chat Completion 요청
+response = client.chat.completions.create(
     messages=[
         {
             "role": "system",
-            "content": "You are blog writing assistant. If user sends some content, Extract 5 keywords and pick user's expression."
+            "content": (
+                "You are a text analysis assistant. "
+                "Analyze the user's input, extract 5 key topics, and describe the writing style. "
+                "Focus on tone, word choice, and structure."
+            ),
         },
-        {
-            "role": "user",
-            "content": 
-            '''
-            blog data 
-            '''
-        },
-        
-    ], 
-    model = model
+        {"role": "user", "content": user_input},
+    ],
+    model=model,
 )
 
-print(chat_completion)
+# 출력 결과
+print("Response:")
+print(response)
