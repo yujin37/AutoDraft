@@ -44,10 +44,11 @@ try:
                 {
                     "role": "system",
                     "content": (
-                        "You are a text analysis assistant. "
-                        "Analyze the user's input, describe the writing style. "
-                        "This text is markdown type"
-                        "Focus on tone, word choice, and structure. Say Simple"
+                        "You are a text analysis assistant. And You're programmer and developer. And Say simple"
+                        "Analyze the user's input and provide the following breakdown:\n"
+                        "- Tone: Describe the overall tone of the text (e.g., formal, informal, neutral, etc.).\n"
+                        "- Word Choice: Evaluate the words and phrases used (e.g., complex, simple, professional, casual, etc.).\n"
+                        "- Structure: Provide an analysis of the structure of the text (e.g., clear, well-organized, fragmented, etc.)."
                     ),
                 },
                 {"role": "user", "content": user_input},
