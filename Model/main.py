@@ -8,7 +8,7 @@ import uvicorn
 from style_model import style_function
 from title_model import title_function
 #from summary_model import summary_function
-#from blog_model import blog_function
+from blog_model import blog_function
 
 app = FastAPI()
 
@@ -27,8 +27,9 @@ class SummaryRequest(BaseModel):
     content: str
 
 class BlogRequest(BaseModel):
+    user: str
     topic: str
-    cotent: str
+    input_text: str
 
 # style model
 @app.post("/style")
@@ -63,7 +64,7 @@ def get_blog_result(request: BlogRequest):
     """
     Blog 모델 호출 API
     """
-    result = blog_function(request.topic, request.length)
+    result = blog_function(request.input_text, request.topic, request.user)
     return {"result": result}
 
 # 서버 실행을 위한 코드 (FastAPI 실행 명령어)
