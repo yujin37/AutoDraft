@@ -6,7 +6,7 @@ model = AutoModelForSeq2SeqLM.from_pretrained("czearing/article-title-generator"
 
 def title_function(input_text: str) -> str :
     # 입력 텍스트 설정
-    input_text = "A groundbreaking study published in Nature reveals that scientists have discovered a way to reverse the effects of aging in mice. By targeting specific proteins in the body, researchers were able to restore the animals' muscle strength, improve cognitive functions, and extend their lifespan by 30%. This revolutionary finding has opened new possibilities for anti-aging treatments in humans. Clinical trials are expected to begin within the next five years, raising hopes for healthier and longer lives."
+    #input_text = "A groundbreaking study published in Nature reveals that scientists have discovered a way to reverse the effects of aging in mice. By targeting specific proteins in the body, researchers were able to restore the animals' muscle strength, improve cognitive functions, and extend their lifespan by 30%. This revolutionary finding has opened new possibilities for anti-aging treatments in humans. Clinical trials are expected to begin within the next five years, raising hopes for healthier and longer lives."
     #영어만 가능하고 현재 한글이 입력이 안 받아지는 현상
     #추가 데이터 학습이 가능하면 추가학습으로 개선할 계획
 
