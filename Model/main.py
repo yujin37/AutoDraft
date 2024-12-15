@@ -3,15 +3,21 @@ from pydantic import BaseModel
 from typing import Dict, List
 from typing import Optional
 import uvicorn
-
+from fastapi.middleware.cors import CORSMiddleware
 # 모델 함수 가져오기
 from style_model import style_function
 from title_model import title_function
-#from summary_model import summary_function
+from summary_model import summary_function
 from blog_model import blog_function
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 모든 도메인에서 요청을 허용
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
@@ -24,7 +30,7 @@ class TitleRequest(BaseModel):
     input_text: str
 
 class SummaryRequest(BaseModel):
-    content: str
+    input_text: str
 
 class BlogRequest(BaseModel):
     user: str
@@ -55,7 +61,7 @@ def get_summary_result(request: SummaryRequest):
     """
     Summary 모델 호출 API
     """
-    result = summary_function(request.article)
+    result = summary_function(request.input_text)
     return {"result": result}
 
 # blog model
