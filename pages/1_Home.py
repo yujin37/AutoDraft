@@ -1,6 +1,9 @@
 import streamlit as st
+import sidebar
 
 def home():
+    sidebar.sidebar_menu()
+    
     st.title("블로그 작성 에이전트")  # 제목 설정
     text = st.text_area("내용을 입력하세요")  # 텍스트 영역 추가
     st.write("입력한 내용:")
