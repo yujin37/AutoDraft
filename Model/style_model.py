@@ -1,25 +1,16 @@
-from openai import OpenAI
+import openai
 import json
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-#llama 모델 관련 설정
 with open('../config.json', 'r') as config_file:
     config = json.load(config_file)
-    SECRET_KEY = config.get('LAMBDA_KEY')
+    SECRET_KEY = config.get('OPENAI_KEY')
 
 if SECRET_KEY is None:
     raise ValueError("SECRET_KEY가 설정되지 않았습니다.")
 
-# Lambda Labs API 키와 베이스 URL 설정
-api_key = SECRET_KEY  # Lambda Labs API Key
-api_base_url = "https://api.lambdalabs.com/v1"
-model = "llama3.1-70b-instruct-berkeley"
-
-client = OpenAI(
-    api_key=api_key,
-    base_url=api_base_url,
-)
+openai.api_key = SECRET_KEY
 
 #사용자 데이터 가져오기.
 cred = credentials.Certificate("../serviceAccountKey.json")
@@ -40,12 +31,13 @@ def style_function(input_text: str, style_type: str = None) -> str:
             #print(user_input)
             # Chat Completion 요청
             
-            response = client.chat.completions.create(
+            response = openai.ChatCompletion.create(
+                model="gpt-4",
                 messages=[
                     {
                         "role": "system",
                         "content": (
-                            "You are a text analysis assistant. And You're programmer and developer. And Say simple"
+                            "You are a text analysis assistant. And You're programmer and developer. "
                             "Analyze the user's input and provide the following breakdown:\n"
                             "- Tone: Describe the overall tone of the text (e.g., formal, informal, neutral, etc.).\n"
                             "- Word Choice: Evaluate the words and phrases used (e.g., complex, simple, professional, casual, etc.).\n"
@@ -54,11 +46,11 @@ def style_function(input_text: str, style_type: str = None) -> str:
                     },
                     {"role": "user", "content": user_input},
                 ],
-                model=model,
             )
     except Exception as e:
         print(f'오류 밠생: {e}')
     # 출력 결과
+    response = response['choices'][0]['message']['content']
     print("Response:")
     print(response)
 

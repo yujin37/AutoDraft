@@ -1,28 +1,20 @@
 import requests
-from openai import OpenAI
+import openai
 import json
 from firebase_admin import credentials, firestore
 import firebase_admin
 
 with open('../config.json', 'r') as config_file:
     config = json.load(config_file)
-    SECRET_KEY = config.get('LAMBDA_KEY')
+    SECRET_KEY = config.get('OPENAI_KEY')
 
 if SECRET_KEY is None:
     raise ValueError("SECRET_KEY가 설정되지 않았습니다.")
 
-# Lambda Labs API 키와 베이스 URL 설정
-api_key = SECRET_KEY  # Lambda Labs API Key
-api_base_url = "https://api.lambdalabs.com/v1"
-model = "llama3.1-70b-instruct-berkeley"
+openai.api_key = SECRET_KEY
 
 cred = credentials.Certificate("../serviceAccountKey.json")
 db = firestore.client()
-
-client = OpenAI(
-    api_key=api_key,
-    base_url=api_base_url,
-)
 
 def blog_function(input_text: str, topic: str, user: str) -> str:
     user_writing_style = ""
@@ -50,7 +42,7 @@ def blog_function(input_text: str, topic: str, user: str) -> str:
 
     # Lambda Labs API를 통한 Chat Completion 요청
     try:
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             messages=[
                 {
                     "role": "system",
@@ -62,9 +54,8 @@ def blog_function(input_text: str, topic: str, user: str) -> str:
                 },
                 {"role": "user", "content": input_text},
             ],
-            model=model,
         )
-        return response.choices[0].message.content  # 생성된 블로그 글 반환
+        return response['choices'][0]['message']['content']  # 생성된 블로그 글 반환
     except Exception as e:
         print(f"Error during Lambda Labs API call: {e}")
         return "Error generating blog content."
