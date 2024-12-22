@@ -24,7 +24,6 @@ def read_root():
 
 class StyleRequest(BaseModel):
     input_text: str
-    style_type: Optional[str] = None
 
 class TitleRequest(BaseModel):
     input_text: str
@@ -43,7 +42,7 @@ def get_style_result(request: StyleRequest):
     """
     Style 모델 호출 API
     """
-    result = style_function(request.input_text, request.style_type)
+    result = style_function(request.input_text)
     return {"result": result}
 
 # title model
