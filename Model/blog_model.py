@@ -18,11 +18,18 @@ db = firestore.client()
 def blog_function(input_text: str, topic: str, user: str) -> str:
     user_writing_style = ""
     doc_ref = db.collection("user_feature").document(user)
-    try:
-        doc = doc_ref.get()
-    except Exception as e:
-        print(f"Error fetching document: {e}")
-        return "Error fetching user data."
+    doc = doc_ref.get()
+
+    # 문서가 없으면 새로 생성하고, 있으면 업데이트
+    if not doc.exists:
+        # 문서가 없으면 새로 생성
+        doc_ref.set({
+            "informartive": ""
+        })
+        print(f"Document for user {user} created.")
+    else:
+        # 문서가 존재하면 업데이트 (이 경우에는 문서 수정 로직을 추가할 수 있습니다)
+        print(f"Document for user {user} already exists.")
     
     # Firestore 문서 확인
     if doc.exists:
