@@ -2,15 +2,14 @@ import streamlit as st
 import requests
 import sidebar
 
-def blog_generate():
+def style_generate():
     sidebar.sidebar_menu()
     st.title('AutoDraft')
     st.subheader('Style')
-    #st.text('내용을 입력하면 블로그 형식으로 작성해줍니다.')
     text = st.text_area(label="내용을 입력하면 내용을 분석하여 블로그 생성 시 참고합니다.", placeholder="내용을 입력하세요")
     if st.button("Generate") and text :
         response = requests.post(
-            "http://127.0.0.1:8000/style", json={"input_text": text, "user": text}
+            "http://127.0.0.1:8000/style", json={"input_text": text}
 
         )
 
@@ -23,4 +22,4 @@ def blog_generate():
 
 
 if __name__ == "__main__":
-    blog_generate()
+    style_generate()
