@@ -12,11 +12,13 @@ def blog_generate():
     else:
         #st.text('내용을 입력하면 블로그 형식으로 작성해줍니다.')
         text = st.text_area(label="내용을 입력하면 블로그 형식으로 작성해줍니다.", placeholder="내용을 입력하세요")
-        topics =['정보전달', "후기"]
+        topics =["Event_recap", "Informative", "Analysis", "Problem_solving", "Tutorial", "Developer_Experience",
+                 "Tech_trends", "Tech comparison", "Project update", "Development Philosophy"]
         selected_topic = st.selectbox("Selected topic", topics)
+        user = str(st.session_state["user"]['email'])
         if st.button("Generate") and text :
             response = requests.post(
-                "http://127.0.0.1:8000/blog", json={"input_text": text, "topic": selected_topic, "user": text}
+                "http://127.0.0.1:8000/blog", json={"input_text": text, "topic": selected_topic, "user": user}
 
             )
 

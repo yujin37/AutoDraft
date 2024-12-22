@@ -6,9 +6,15 @@ if "logged_in" not in st.session_state:
 
 def main():
     st.title("블로그 작성 에이전트")
-    #st.write("앱을 실행합니다. 사이드바에서 페이지를 선택하세요.")
+    if "user" not in st.session_state:
+        st.session_state["user"] = None  # 또는 빈 값으로 초기화
+
+    if st.session_state["user"]:
+        st.write(f"User logged in: {st.session_state['user']['email']}")
+    else:
+        st.write("No user logged in.")
     sidebar.sidebar_menu()
-    
+    st.write(st.session_state["user"])
     # 기본 페이지를 Home으로 설정
     if 'page' not in st.session_state:
         st.session_state['page'] = 'Home'

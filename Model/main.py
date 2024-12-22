@@ -32,9 +32,9 @@ class SummaryRequest(BaseModel):
     input_text: str
 
 class BlogRequest(BaseModel):
-    user: str
     topic: str
     input_text: str
+    user: str
 
 # style model
 @app.post("/style")
