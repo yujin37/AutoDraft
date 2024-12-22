@@ -12,8 +12,8 @@ def blog_generate():
     else:
         #st.text('내용을 입력하면 블로그 형식으로 작성해줍니다.')
         text = st.text_area(label="내용을 입력하면 블로그 형식으로 작성해줍니다.", placeholder="내용을 입력하세요")
-        topics =["Event_recap", "Informative", "Analysis", "Problem_solving", "Tutorial", "Developer_Experience",
-                 "Tech_trends", "Tech comparison", "Project update", "Development Philosophy"]
+        topics =["event_recap", "informative", "analysis", "problem_solving", "tutorial", "developer_experience",
+                 "tech_trends", "tech comparison", "project update", "development Philosophy"]
         selected_topic = st.selectbox("Selected topic", topics)
         user = str(st.session_state["user"]['email'])
         if st.button("Generate") and text :
