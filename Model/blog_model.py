@@ -1,8 +1,7 @@
-import requests
-import openai
+from openai import OpenAI
 import json
 from firebase_admin import credentials, firestore
-import firebase_admin
+import streamlit as st
 
 with open('../config.json', 'r') as config_file:
     config = json.load(config_file)
@@ -11,7 +10,7 @@ with open('../config.json', 'r') as config_file:
 if SECRET_KEY is None:
     raise ValueError("SECRET_KEY가 설정되지 않았습니다.")
 
-openai.api_key = SECRET_KEY
+client = OpenAI(api_key=SECRET_KEY)
 
 cred = credentials.Certificate("../serviceAccountKey.json")
 db = firestore.client()
@@ -24,8 +23,6 @@ def blog_function(input_text: str, topic: str, user: str) -> str:
     except Exception as e:
         print(f"Error fetching document: {e}")
         return "Error fetching user data."
-
-    print(input_text, topic, user)
     
     # Firestore 문서 확인
     if doc.exists:
@@ -40,9 +37,9 @@ def blog_function(input_text: str, topic: str, user: str) -> str:
         print(f"Document '{user}' does not exist.")
         user_writing_style = "No user writing style available."
 
-    # Lambda Labs API를 통한 Chat Completion 요청
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
+            model="gpt-4o",
             messages=[
                 {
                     "role": "system",
@@ -55,7 +52,7 @@ def blog_function(input_text: str, topic: str, user: str) -> str:
                 {"role": "user", "content": input_text},
             ],
         )
-        return response['choices'][0]['message']['content']  # 생성된 블로그 글 반환
+        return response.choices[0].message.content # 생성된 블로그 글 반환
     except Exception as e:
         print(f"Error during Lambda Labs API call: {e}")
         return "Error generating blog content."
