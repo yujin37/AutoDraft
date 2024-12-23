@@ -10,14 +10,27 @@ tokenizer = AutoTokenizer.from_pretrained('eenzeenee/t5-base-korean-summarizatio
 
 prefix = "summarize: "
 
-def summary_function(input_text: str) -> str :
-    #print(input_text)
+def summary_function(input_text: str) -> str:
+    # print(input_text)
     inputs = [prefix + input_text]
 
+    # Tokenize input
     inputs = tokenizer(inputs, max_length=512, truncation=True, return_tensors="pt")
-    output = model.generate(**inputs, num_beams=3, do_sample=True, min_length=10, max_length=64)
+    
+    # Generate summary
+    output = model.generate(
+        **inputs, 
+        num_beams=5,          # Beam search for better quality
+        do_sample=True, 
+        min_length=50,        # Increase minimum length
+        max_length=150,       # Increase maximum length
+        temperature=0.7       # Adjust creativity (lower = more focused)
+    )
+    
+    # Decode output
     decoded_output = tokenizer.batch_decode(output, skip_special_tokens=True)[0]
-    result = nltk.sent_tokenize(decoded_output.strip())[0]
+    result = decoded_output.strip()  # Return full decoded output
+    
     #inputs = tokenizer(input_text, return_tensors="pt").to(model.device)
     #with torch.no_grad():  # No gradient calculation needed for inference
     #    output = model.generate(
