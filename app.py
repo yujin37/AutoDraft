@@ -5,7 +5,7 @@ if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False
 
 def main():
-    st.title("블로그 작성 에이전트")
+    st.title("AutoDraft")
     if "user" not in st.session_state:
         st.session_state["user"] = None  # 또는 빈 값으로 초기화
 
