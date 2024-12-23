@@ -9,6 +9,7 @@ from style_model import style_function
 from title_model import title_function
 from summary_model import summary_function
 from blog_model import blog_function
+from hashtag_model import hashtag_function
 
 app = FastAPI()
 app.add_middleware(
@@ -35,6 +36,8 @@ class BlogRequest(BaseModel):
     topic: str
     input_text: str
     user: str
+class HashtagRequest(BaseModel):
+    input_text: str
 
 # style model
 @app.post("/style")
@@ -70,6 +73,15 @@ def get_blog_result(request: BlogRequest):
     Blog 모델 호출 API
     """
     result = blog_function(request.input_text, request.topic, request.user)
+    result2 = title_function(request.input_text)
+    return {"title": result2, "content": result}
+
+@app.post("/hashtag")
+def get_hashtag_result(request: HashtagRequest):
+    """
+    hashtag 모델 호출 API
+    """
+    result = hashtag_function(request.input_text)
     return {"result": result}
 
 # 서버 실행을 위한 코드 (FastAPI 실행 명령어)
