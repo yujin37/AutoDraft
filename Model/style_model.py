@@ -36,7 +36,7 @@ def new_style(input_text: str) -> str:
                     "content": (
                         "You are a text analysis assistant. Analyze the text and suggest an appropriate style type. "
                         "The available style types are: event_recap, informative, analysis, problem_solving, tutorial, developer_experience, "
-                        "tech trends, tech comparison, project update, and development philosophy. "
+                        "tech_trends, tech_comparison, project_update, and development_philosophy. "
                         "Please provide the chosen style type and its characteristics."
                     ),
                 },
